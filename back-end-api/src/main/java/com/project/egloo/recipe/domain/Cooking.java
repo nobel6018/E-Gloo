@@ -2,30 +2,32 @@ package com.project.egloo.recipe.domain;
 
 import com.project.egloo.common.ColumnDescription;
 import com.project.egloo.ingredient.domain.Ingredient;
-import lombok.*;
-import org.hibernate.annotations.DynamicInsert;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 
 @Entity
-@AllArgsConstructor
-@NoArgsConstructor(access = AccessLevel.PUBLIC)
 @Getter
 @Setter
-@Data
-@DynamicInsert
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Cooking {
 
     @Id
     @GeneratedValue
+    @Column(name = "cooking_id")
     @ColumnDescription("PK")
-    private Long    id;
+    private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "recipe_id")
     @ColumnDescription("FK 레시피 ID")
     private Recipe recipe;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "ingredient_id")
     @ColumnDescription("FK 재료 ID")
     private Ingredient ingredient;
 
@@ -39,6 +41,7 @@ public class Cooking {
     @ColumnDescription("가격")
     private int price;
 
+    @Column(name = "is_necessary")
     @ColumnDescription("필수 여부")
-    private boolean checkIngredients;
+    private boolean isNecessary;
 }
